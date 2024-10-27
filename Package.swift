@@ -2,7 +2,9 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import CompilerPluginSupport
+
 import Foundation
+
 import PackageDescription
 
 let package = Package(
@@ -25,7 +27,10 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0"),
+        // .package(url: "https://github.com/sjavora/swift-syntax-xcframeworks.git", from: "600.0.0")
+        .package(
+            url: "https://github.com/openium/swift-syntax-xcframeworks.git",
+            branch: "feat/swift-6-public-import-and-release")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,8 +38,7 @@ let package = Package(
         .macro(
             name: "CoreDataEvolutionMacros",
             dependencies: [
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxWrapper", package: "swift-syntax-xcframeworks")
             ]
         ),
         .target(
@@ -46,10 +50,10 @@ let package = Package(
         .testTarget(
             name: "CoreDataEvolutionTests",
             dependencies: [
-                "CoreDataEvolution",
+                "CoreDataEvolution"
             ],
             resources: [
-                .process("Resources"),
+                .process("Resources")
             ]
         ),
         .executableTarget(name: "CoreDataEvolutionClient", dependencies: ["CoreDataEvolution"]),
